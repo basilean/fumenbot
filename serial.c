@@ -1,19 +1,13 @@
-/*******
-
-FumenBot v0.7
-http://fumenbot.sourceforge.net/
-
-Andres Basile GPLv3
-
-*******/
-
-// Mostly here was taken from differents examples around web.
+/*
+ * FumenBot v0.71
+ * http://fumenbot.sourceforge.net/
+ *
+ * Andres Basile GPLv3
+ * http://www.gnu.org/licenses/gpl-3.0.en.html
+ */
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-
-#include "main.h"
-#include "fumenbot.h"
 #include "serial.h"
 
 void serial_setup()
@@ -22,23 +16,22 @@ void serial_setup()
 	UBRR0L = BAUD_PRESCALLER;
 	UCSR0B = (1<<RXEN0) | (1<<TXEN0) | (1<<RXCIE0);
 	UCSR0C = (1<<UCSZ01) | (1<<UCSZ00);
-	serial_idx = 0;
-	serial_go = 0;
+	SERIAL_INDEX = 0;
+	SERIAL_READY = 0;
 }
 
 ISR(USART_RX_vect)
 {
-	volatile uint8_t tmp = UDR0;
-	if(tmp == '\r') {
-		serial_go = 1;
+	SERIAL_CHAR = UDR0;
+	if(SERIAL_CHAR == '\r' || SERIAL_CHAR == '\n') {
+		SERIAL_READY = 1;
 	}
 	else {
-		serial_buffer[serial_idx] = tmp;
-		serial_idx++;
+		SERIAL_BUFFER[SERIAL_INDEX] = SERIAL_CHAR;
+		SERIAL_INDEX++;
 	}
-	UDR0 = tmp;
+	UDR0 = SERIAL_CHAR;
 }
-
 
 char serial_get(void)
 {
@@ -46,27 +39,27 @@ char serial_get(void)
 	return UDR0;
 }
  
-void serial_put(char data)
+void serial_put(char c)
 {
 	while(!(UCSR0A & (1<<UDRE0)));
-	UDR0 = data;
+	UDR0 = c;
 }
  
-void serial_puts(char* data)
+void serial_puts(char* c)
 {
-	while(*data != 0x00) {
-		serial_put(*data);
-		data++;
+	while(*c != 0x00) {
+		serial_put(*c);
+		c++;
 	}
 }
 
 void serial_flush()
 {
-	serial_idx = 0;
-	serial_go = 0;
-	int i;
+	SERIAL_INDEX = 0;
+	SERIAL_READY = 0;
+	uint8_t i;
 	for(i=0; i<SERIAL_BUFFER_SIZE; i++) {
-		serial_buffer[i] = '\0';
+		SERIAL_BUFFER[i] = '\0';
 	}
 }
 

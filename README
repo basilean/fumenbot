@@ -1,2 +1,22 @@
-https://sourceforge.net/p/fumenbot/
+/*
+ * FumenBot v0.71
+ * http://fumenbot.sourceforge.net/
+ *
+ * Andres Basile GPLv3
+ * http://www.gnu.org/licenses/gpl-3.0.en.html
+ */
 
+History:
+
+v0.71
+Improved firmware
+- Got rid of third party code.
+- New time keeper using counter1 and fatstest algoritm for alamrs. Still needs a resume function.
+- New TWI interface using interrupts, including wraps for ds1307. It is readinf, WIP for writing.
+
+v0.7
+First implementation with Arduino, an ugly firmware written in C using third party code.
+
+v0.6
+This implementation uses an old PC and its parallel port.
+Written on Perl, it has a web interface and uses motion to control a webcam.

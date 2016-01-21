@@ -5,7 +5,7 @@ CC = avr-gcc
 OBJCOPY = avr-objcopy
 CFLAGS += -Wall -g -Os -mmcu=$(MCU) -DF_CPU=$(F_CPU)
 LDFLAGS += 
-OBJS = main.o $(PROGRAM).o serial.o ds1307.o twimaster.o
+OBJS = main.o $(PROGRAM).o serial.o time.o i2c.o adc.o dio.o
 
 ifneq ($(V),1)
 Q := @
