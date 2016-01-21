@@ -6,17 +6,40 @@
  * http://www.gnu.org/licenses/gpl-3.0.en.html
  */
 
-History:
+TODO:
+ While its better than before, there still work to do
+- Global
+	* Get rid of globals and start using references.
+	* Merge all convertion functions at one tools.c library.
+	* Normalize coding style.
+- fumenbot.c
+	* Loop and semaphores, standarize way libraries are invoked.
+- time.c
+	* Alarm related functions better but still nasty.
+	*
+- i2c.c
+	* Conditions at ISR just handle Master and not in its best way.
+	* ds1307 handler is just working, needs to be improved it.
 
-v0.71
+WISHLIST:
+	* Write eeprom library to store configuration there.
+	* Add more handlers for sensors.
+	* Add more handlers for TWI.
+	* Rewrite serial library and add rs485 mode.
+
+HISTORY:
+- v0.71
 Improved firmware
-- Got rid of third party code.
-- New time keeper using counter1 and fatstest algoritm for alamrs. Still needs a resume function.
-- New TWI interface using interrupts, including wraps for ds1307. It is readinf, WIP for writing.
+- Got rid of third party code but still using avr gcc libs.
+- New time keeper using counter1 and fastest algoritm for alarms.
+- New TWI interface using interrupts, including a wrap for ds1307.
+- New ADC interface using interrupts. including a wrap for lm35.
+- New DIO interface including PWM.
 
-v0.7
+- v0.7
 First implementation with Arduino, an ugly firmware written in C using third party code.
 
-v0.6
+- v0.6
 This implementation uses an old PC and its parallel port.
 Written on Perl, it has a web interface and uses motion to control a webcam.
+
