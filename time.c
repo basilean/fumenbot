@@ -11,7 +11,7 @@
 #include "time.h"
 
 static alarm_t TIME_ALARM[] = {
-{1, 0, "S"}, // 600s = 0:10 | Sync RTC
+{1, 0, "S"}, // 1s = 0:00 | Sync RTC -> (?s < 10) dont run at resume function. (avoid 4ever loop)
 {900, 3600, "C0"}, // Fisrt at 900s(0:15) then interval each 3600s (1h) | ON cooler
 {902, 3600, "C1"},
 {1200, 3600, "c0"}, // Fisrt at 900s(0:20) then interval each 3600s (1h) | OFF cooler
@@ -203,8 +203,8 @@ void alarm_next() {
 	uint32_t c;
 	uint32_t cb = 86400;
 	for(i=0;i<TIME_ALARM_COUNT;i++) {
-		if (TIME_ALARM[i].interval) {
-			s = ((TIME_COUNT / TIME_ALARM[i].interval) * TIME_ALARM[i].interval) + TIME_ALARM[i].sec;
+		if ((TIME_ALARM[i].interval) && (TIME_ALARM[i].sec < TIME_COUNT)) {
+			s = ((((TIME_COUNT - TIME_ALARM[i].sec) / TIME_ALARM[i].interval) + 1) * TIME_ALARM[i].interval) + TIME_ALARM[i].sec;
 		}
 
 		else {
